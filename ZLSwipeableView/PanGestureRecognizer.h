@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PanGestureRecognizer : UIPanGestureRecognizer
+@interface PanGestureRecognizer : UIPanGestureRecognizer<UIGestureRecognizerDelegate>
 
 @end
