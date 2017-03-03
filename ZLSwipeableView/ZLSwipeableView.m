@@ -299,6 +299,22 @@
         }];
 }
 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+    
+    // Convert the point to the target view's coordinate system.
+    // The target view isn't necessarily the immediate subview
+    CGPoint pointForTargetView = [self.topView convertPoint:point fromView:self];
+    
+    if (CGRectContainsPoint(self.topView.bounds, pointForTargetView)) {
+        
+        // The target view may have its view hierarchy,
+        // so call its hitTest method to return the right hit-test view
+        return [self.topView hitTest:pointForTargetView withEvent:event];
+    }
+    
+    return [super hitTest:point withEvent:event];
+}
+
 #pragma mark - ()
 
 - (UIView *)nextView {

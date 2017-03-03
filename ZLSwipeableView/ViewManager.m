@@ -46,8 +46,13 @@ static const CGFloat kAnchorViewWidth = 1000;
         self.animator = animator;
         self.swipeableView = swipeableView;
 
-        [view addGestureRecognizer:
-                  [[PanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)]];
+        PanGestureRecognizer *panGesture = [[PanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+        [tapGesture requireGestureRecognizerToFail:panGesture];
+        
+        [view addGestureRecognizer:panGesture];
+        [view addGestureRecognizer:tapGesture];
+        
         _anchorView =
             [[UIView alloc] initWithFrame:CGRectMake(0, 0, kAnchorViewWidth, kAnchorViewWidth)];
         _anchorView.hidden = NO;
@@ -82,6 +87,11 @@ static const CGFloat kAnchorViewWidth = 1000;
 }
 
 #pragma mark - Action
+
+- (void)handleTap:(UITapGestureRecognizer *)recognizer {
+    [self.swipeableView.delegate swipeableView:self.swipeableView didTapView:_view];
+}
+
 
 - (void)handlePan:(UIPanGestureRecognizer *)recognizer {
     if (!_swipeableView) {
